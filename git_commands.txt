@@ -1,0 +1,151 @@
+GIT COMMANDS USED IN THIS ASSIGNMENT
+====================================
+Project folder: my-portfolio
+These are listed in the same order I ran them.
+
+
+------------------------------------------------------------
+STEP 1 - Local repository setup
+------------------------------------------------------------
+
+ls
+    Lists the files in the folder. I used it to check that index.html and
+    about.html were there before starting Git.
+
+git init -b main
+    Turns the folder into a Git repository (creates the hidden .git folder).
+    The -b main part names the first branch "main" instead of "master".
+
+git config core.autocrlf false
+    Tells Git not to convert line endings on Windows. Without this, Git kept
+    showing files as "modified" even when I hadn't changed them.
+
+git status
+    Shows what state the files are in: untracked, modified, staged, or clean.
+    I ran this a lot to check things before committing.
+
+
+------------------------------------------------------------
+STEP 2 - Commits, branching and merging
+------------------------------------------------------------
+
+git add index.html about.html
+    Stages the two HTML files, which means they are marked to go into the
+    next commit.
+
+git commit -m "Initial commit: add index.html and about.html"
+    Saves the staged files as the first snapshot of the project. The -m flag
+    lets me write the commit message in the same line.
+
+git diff
+    Shows exactly which lines changed since the last commit. I used it to
+    double check my edit to index.html before committing.
+
+git add index.html
+    Stages only the modified index.html file.
+
+git commit -m "Update index.html with a short intro line"
+    Second commit, recording the change to the home page.
+
+git branch feature
+    Creates a new branch called "feature" starting from the current commit.
+    It does not switch to it yet.
+
+git branch
+    Lists all local branches. The one with * is the branch I'm currently on.
+
+git checkout feature
+    Switches to the feature branch so new commits go there and not on main.
+
+git add about.html
+    Stages the skills section I added to about.html on the feature branch.
+
+git commit -m "Add skills section to about page (feature branch)"
+    Commits the change on the feature branch only. main doesn't have it yet.
+
+git log --oneline
+    Shows the commit history in short form, one commit per line.
+
+git checkout main
+    Switches back to the main branch.
+
+git merge --no-ff feature -m "Merge branch feature into main"
+    Brings the feature branch changes into main. --no-ff forces a proper
+    merge commit, so the branch still shows up in the history instead of
+    being flattened into a straight line.
+
+git log --oneline --graph --all --decorate
+    Shows the full history of all branches as a small text graph, with
+    branch names next to the commits. This is where the merge is visible.
+
+
+------------------------------------------------------------
+STEP 3 - .gitignore
+------------------------------------------------------------
+
+cat .gitignore
+    Prints the contents of .gitignore (not a Git command, just to show it).
+    It ignores *.log files and the temp/ folder.
+
+ls -A
+    Lists all files including hidden ones, to show that debug.log and the
+    temp folder really exist in the project folder.
+
+git check-ignore -v debug.log temp/notes.txt
+    Confirms that Git is ignoring these files and tells me which line of
+    .gitignore is responsible for each one.
+
+git add .gitignore
+    Stages the .gitignore file.
+
+git commit -m "Add .gitignore to skip log files and temp folder"
+    Commits .gitignore so the ignore rules are part of the repository.
+
+
+------------------------------------------------------------
+STEP 4 - Undoing a commit
+------------------------------------------------------------
+
+git add index.html
+git commit -m "Add contact footer to home page"
+    The extra commit that I then undid.
+
+git log --oneline -3
+    Shows only the last 3 commits, to see the new commit on top.
+
+tail -4 index.html
+    Shows the last 4 lines of the file (not a Git command), used to show the
+    footer before and after the undo.
+
+git revert HEAD --no-edit
+    Undoes the last commit by creating a new commit that does the opposite.
+    I picked revert over reset because it doesn't delete history, which is
+    safer once the code is shared on GitHub. --no-edit keeps the default
+    message.
+
+git log --oneline -4
+    Shows that both the original commit and the "Revert" commit are in the
+    history, and the footer is gone from the file.
+
+
+------------------------------------------------------------
+STEP 5 - Pushing to GitHub
+------------------------------------------------------------
+
+git remote add origin https://github.com/AbhijeetPatil2005/my-portfolio.git
+    Links my local repository to the empty public repository I created on
+    GitHub. "origin" is just the usual nickname for the remote.
+
+git remote -v
+    Shows the remote URLs so I could check the link was set correctly.
+
+git push -u origin main
+    Uploads the main branch and all its commits to GitHub. -u sets origin/main
+    as the default, so later I can just type git push.
+
+git push origin feature
+    Also uploads the feature branch so the branch is visible on GitHub too.
+
+git log --oneline --graph --all --decorate
+    Final check of the full history, now also showing origin/main and
+    origin/feature, which means everything is on GitHub.
